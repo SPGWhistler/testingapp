@@ -1,0 +1,162 @@
+
+/* basic page layout */
+* {margin:0; padding:0;}
+
+body {
+	font-family: Arial, sans-serif;
+	font-size:12px;
+	color:#fff;
+	padding:0px;
+	margin:0px;
+	background:#555;
+}
+
+.bullets {
+    list-style-image: url("images/bullet.png");
+}
+
+#management, .management 
+{
+   width:320px;
+   background-image:url('images/bg_int.jpg');
+   background-repeat:no-repeat;
+   min-height:198px;
+}
+
+#payreglog, .payreglog {
+  width:320px;
+  background-image:url('images/bg_pay_reg_log.png');
+  background-repeat: no-repeat;
+  min-height:198px;
+}
+
+input[type="text"],input[type="number"],input[type="email"],input[type="password"],textarea,.fakeinput { width: 274px;height:22px;color:#fff;border:1px solid #999;background:#666;border-radius:6px;-moz-border-radius: 6px;border:1px solid #999; }
+
+.smallTextBox { width: 130px ! important;height:22px;color:#fff;border:1px solid #999;background:#333;border-radius:6px;-moz-border-radius: 6px;border:1px solid #999; 
+}
+.cornerBorders {
+	float:left;
+	width:283px;
+	border-radius:6px;
+	-moz-border-radius: 6px;
+	border:1px solid #333;
+	padding-left:10px;
+	padding-right:5px;
+	padding-top:2px;
+	padding-bottom:2px;
+	background-color:#333;
+}
+
+.contentArea {
+	clear:both;
+	padding-left:11px;
+	padding-right:11px;
+	padding-top:8px;
+	padding-bottom:8px;
+}
+
+
+.listHeading {
+	font-size:13px;
+	color:#fff;
+}
+
+.darkHR {color:#666;}
+.lightHR {color:#999;}
+
+#content {
+	position:relative;
+	left:10px;
+	width:300px;
+	left:10px;
+}
+
+.rightAlign {
+	position:relative;
+	float:right;
+}
+
+.validError{color:red;}
+ 
+a {color:#ccc;}
+ 
+#settings {
+	display:none;width:200px;position:absolute;top:10px;left:40px;height:100px;background-color:#555;border:1px solid #333;
+	border-radius:5px;
+	-moz-border-radius:5px;
+	z-index:2000;padding:10px;
+	font-size:16px;
+}
+ 
+td { border-bottom:solid 1px #666;}
+
+img {border:none;}
+
+#registration_mask {background-image:-webkit-gradient(linear, 0% 0%, 0% 100%, from(#161616), to(#6f6f6f)); }
+
+#greybox {float:left; width:100%; height:100%; background-color:#333; -webkit-border-radius:8px;-moz-border-radius:8px; border-radius:8px; padding:12px;}
+#bigLogo {float:left; display:block; width:320px; height:114px; background:url("images/logo-lg.png") 0px 0px no-repeat;}
+#insetLogo {float:left; display:block; width:80px; height:93px; background:url("images/logo-inset.png") 0px 0px no-repeat;}
+.infoInset {float:left; width:90%; background-color:#3b3b3b; -webkit-border-radius:5px; border-radius:5px;-moz-border-radius:5px; padding:12px;}
+.modSpacer {height:5px;clear:both;}
+
+/* button sprites */
+a.bClose {display:block; float:left; width:31px; height:31px; background:url("images/button_sprite.png") -1px -2px no-repeat;}
+a.bClose:HOVER, a.bClose:FOCUS {background-position: -1px -37px;}
+a.bInfo {display:block; float:left; width:29px; height:29px; background:url("images/button_sprite.png") -34px -3px no-repeat;}
+a.bInfo:HOVER, a.bInfo:FOCUS {background-position: -34px -38px;}
+a.bSettings {display:block; float:left; width:31px; height:31px; background:url("images/button_sprite.png") -1px -72px no-repeat;}
+a.bSettings:HOVER, a.bSettings:FOCUS {background-position: -1px -107px;}
+a.bArrow {display:block; float:left; width:31px; height:31px; background:url("images/button_sprite.png") -33px -72px no-repeat;}
+a.bArrow:HOVER, a.bArrow:FOCUS {background-position: -33px -107px;}
+
+/* text button sprites */
+a.bBack {display:block; float:left; width:78px; height:35px; background:url("images/button_sprite.png") -64px 0px no-repeat;}
+a.bBack:HOVER, a.bBack:FOCUS {background-position: -64px -35px;}
+a.bDecline {display:block; float:left; width:78px; height:35px; background:url("images/button_sprite.png") -142px 0px no-repeat;}
+a.bDecline:HOVER, a.bDecline:FOCUS {background-position: -142px -35px;}
+a.bNext {display:block; float:left; width:78px; height:35px; background:url("images/button_sprite.png") -220px 0px no-repeat;}
+a.bNext:HOVER, a.bNext:FOCUS {background-position: -220px -35px;}
+a.bFinish {display:block; float:left; width:78px; height:35px; background:url("images/button_sprite.png") -298px 0px no-repeat;}
+a.bFinish:HOVER, a.bFinish:FOCUS {background-position: -298px -35px;}
+a.bAgree {display:block; float:left; width:78px; height:35px; background:url("images/button_sprite.png") -376px 0px no-repeat;}
+a.bAgree:HOVER, a.bAgree:FOCUS {background-position: -376px -35px;}
+a.bContinue {display:block; float:left; width:206px; height:35px; background:url("images/button_sprite.png") -454px 0px no-repeat;}
+a.bContinue:HOVER, a.bContinue:FOCUS {background-position: -454px -35px;}
+a.bLogin {display:block; float:left; width:78px; height:35px; background:url("images/button_sprite.png") -64px -70px no-repeat;}
+a.bLogin:HOVER, a.bLogin:FOCUS {background-position: -64px -105px;}
+a.bPay {display:block; float:right; width:40px; height:40px; background:url("images/button_import.png") -142px -70px no-repeat;}
+a.bPay:HOVER, a.bPay:FOCUS {background-position: -142px -105px;}
+a.bImportButton {display:block; float:left; width:187px; height:35px; background:url("images/button_sprite.png") -220px -70px no-repeat;}
+a.bImportButton:HOVER, a.bImport:FOCUS {background-position: -220px -105px;}
+a.bExportButton {display:block; float:left; width:208px; height:35px; background:url("images/button_sprite.png") -407px -70px no-repeat;}
+a.bExportButton:HOVER, a.bExport:FOCUS {background-position: -407px -105px;}
+a.bStart {display:block; float:left; width:270px; height:35px; background:url("images/button_sprite.png") -64px -140px no-repeat;}
+a.bStart:HOVER, a.bStart:FOCUS {background-position: -64px -174px;}
+a.bImportInfo {display:block; float:left; width:270px; height:35px; background:url("images/button_sprite.png") -334px -140px no-repeat;}
+a.bImportInfo:HOVER, a.bImportInfo:FOCUS {background-position: -334px -174px;}
+
+a.gryPrint {display:block; float:left; width:97px; height:97px; background:url("images/touch_buttons.png") 0px 0px no-repeat;}
+a.gryPrint:HOVER, a.gryPrint:FOCUS {background-position: 0px -97px;}
+a.orgPrint {display:block; float:left; width:97px; height:97px; background:url("images/touch_buttons.png") -97px 0px no-repeat;}
+a.orgPrint:HOVER, a.orgPrint:FOCUS {background-position: -97px -97px;}
+
+.contactBox{float:left; height:40px; width:95%; -webkit-border-radius:5px; -moz-border-radius:5px; border-radius:5px; border-style:solid; border-width:1px; border-color:#666; padding-left:10px; font-family:Helvetica, Arial, sans-serif; color:#ccc; font-size:14px; line-height:40px; font-weight:bold; }
+
+a.tabAccount {display:block;float:left;width:128px;height:42px; background:url("images/management_tabs.png") 0px 0px no-repeat;}
+a.tabAccountOff {display:block;float:left;width:128px;height:42px; background:url("images/management_tabs.png") 0px -42px no-repeat;}
+
+a.tabTransfer {display:block;float:left;width:128px;height:42px; background:url("images/management_tabs.png") -129px -42px no-repeat;}
+a.tabTransferOff {display:block;float:left;width:128px;height:42px; background:url("images/management_tabs.png") -129px -0px no-repeat;}
+
+/* type styles */ 
+h1 {color:#fff; font-family:'Helvetica', Helvetica, Arial, sans-serif; font-size:14px; line-height:18px; font-weight:bold; margin-bottom:4px;}
+.whtHead {color:#fff; font-family:'Helvetica', Helvetica, Arial, sans-serif; font-size:12px; font-weight:bold; margin-bottom:2px;}
+.orgHead {color:#f90; font-family:'Helvetica', Helvetica, Arial, sans-serif; font-size:12px; font-weight:bold; margin-bottom:2px;}
+.instructions {color:#ccc; font-family:'Helvetica', Helvetica, Arial, sans-serif; font-size:13px; line-height:14px; margin-bottom:2px;}
+.fieldEntry {color:#fff; font-family:'Helvetica', Helvetica, Arial, sans-serif; font-size:12px; line-height:25px;}
+.textBody {color:#ccc; font-family:'Helvetica', Helvetica, Arial, sans-serif; font-size:12px; line-height:14px;}
+a.textLink {color:#0cf; font-family:'Helvetica', Helvetica, Arial, sans-serif; font-size:12px; line-height:14px; text-decoration:underline}
+
+#ie_exp_year_reg
+{position:relative;left:150px;top:-15px;width:120px;height:12px}

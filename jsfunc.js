@@ -9,7 +9,8 @@ var onDeviceReady=function(){
 	ddebug('device ready');
 	//hide the splash screen
 	AppMobi.device.hideSplashScreen();
-	AppMobi.notification.checkPushUser(AppMobi.device.uuid, AppMobi.device.uuid);
+	AppMobi.device.managePower(true,false); //When app is open, dont go to sleep
+	AppMobi.notification.checkPushUser('spgwhistler', 'spgwhistler');
 };
 document.addEventListener("appMobi.device.ready",onDeviceReady,false);
 
@@ -17,14 +18,17 @@ document.addEventListener("appMobi.device.ready",onDeviceReady,false);
 var didAdd = false;
 var tmpEvts = [];
 var notificationsRegistered=function(event) {
+	ddebug('in notifications registered func');
+	ddebug(event);
 	//This is first called from the checkPushUser event above.
 	//If a user is not found, success = false, and this tries to add that user.
 	if(event.success === false) {
 		if (didAdd === false) {
+			ddebug('doing add user');
 			didAdd = true;
 			//AppMobi.notification.alert("Doing addPushUser now...","My Message","OK");
 			//Try adding the user now - sending unique user id, password, and email address.
-			AppMobi.notification.addPushUser(AppMobi.device.uuid, AppMobi.device.uuid, 'no@email.com');
+			AppMobi.notification.addPushUser('spgwhistler', 'spgwhistler', 'spgwhistler@gmail.com');
 			//This will fire the push.enable event again, so that is why we use didAdd to make sure
 			//we dont add the user twice if this fails for any reason.
 			return;
@@ -37,6 +41,7 @@ var notificationsRegistered=function(event) {
 }
 document.addEventListener("appMobi.notification.push.enable",notificationsRegistered,false);
 
+/*
 document.addEventListener("appMobi.notification.push.receive", function(){
 	var myNotifications=AppMobi.notification.getNotificationList();
 	var len=myNotifications.length;
@@ -46,6 +51,7 @@ document.addEventListener("appMobi.notification.push.receive", function(){
 		}
 	}
 }, false);
+*/
 
 document.addEventListener("wylei.ready", function(d){
 	ddebug('wylei ready');

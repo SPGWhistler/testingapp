@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>1Touch Payments</title>
+<meta http-equiv="Content-type" content="text/html; charset=utf-8">
+
+<meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=no;"/>
+<style type="text/css">
+/* Prevent copy paste for all elements except text fields */
+* {
+	-webkit-user-select: none;
+}
+input,textarea {
+	-webkit-user-select: text;
+}
+.spacer
+{
+    border: 0;
+    background:#666;
+    height:1px;
+}
+</style>
+<script>
+</script>
+<script type="text/javascript" charset="utf-8" src="http://localhost:58888/_appMobi/appmobi.js"></script>
+<script type="text/javascript" src="libs/aUX_webScroll.js"></script>
+<script type="text/javascript" charset="utf-8" src="libs/controller.js"></script>
+<script type="text/javascript">
+var emailPattern= /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+</script>
+<link rel="stylesheet" href="1touch.css" type="text/css" />
+</head>
+<body>
+<div id="main_app_div">
+	<div id="app_mask" style="display:block;position:relative;top:0px;left:0px;right:0px;bottom:0px;z-index:5;">
+
+		<div class="payreglog" id="register" style="display: none">
+			<img src="images/sm_logo.png"><br/>
+			<div id="content" style="padding-top: 10px;">
+				<div class="listHeading" style="margin-bottom: 5px">
+					Please register for your 1Touch account.
+				</div>
+				<div id="formfields" class="cornerBorders">
+					<span class="listHeading">Email Address :</span><br/><input name="reg_username" type="email" id="reg_username"/><br/><span class="listHeading">Password:</span><br/><span><input name="reg_password" type="password" id="reg_password"/></span><br/><br/>
+					<span class="listHeading">Confirm Password:</span><br/><span><input name="reg_ConfirmPassword" type="password" id="reg_ConfirmPassword"/></span><br/>
+					<br>
+					<div class="rightAlign">
+						<div id="formButtons">
+							<a href="javascript:AMController.cancel();"><img alt="Cancel" border="0" onmouseover="this.src='images/button_cancel_over.png'" onmouseout="this.src='images/button_cancel.png'" id="Img1" src="images/button_cancel.png"/></a><a href="javascript:;" onclick="AMController.register();"><img name="SubmitButton" id="RegisterSubmitButton" text="Register" onmouseover="this.src='images/button_submit_over.png'" onmouseout="this.src='images/button_submit.png'" src="images/button_submit.png" style="border-width: 0px;"></a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="payreglog" id="loading" style="display: block">
+			<img src="images/sm_logo.png"><br/>
+			<div id="content" style="padding-top: 10px;">
+			....loading...
+			</div>
+		</div>
+		<div class="payreglog" id="welcome" style="display: none">
+			<img src="images/sm_logo.png"><br/>
+			<div id="content" style="padding-top: 10px;">
+			To complete this transaction, please <a href="javascript:;" onclick="HideDivs('register')">Register</a> or <a href="javascript:;" onclick="HideDivs('login_div')">Login</a>
+			</div>
+		</div>
+		<div id="login_div" class="payreglog" style="display: none">
+			<img src="images/sm_logo.png"><br/>
+			<div id="content">
+				<div id="formfields" class="cornerBorders">
+					<div class="listHeading" style="margin-bottom: 5px">
+						 Please login to your 1Touch account <span id="appname_label" style='display:none'></span>
+					</div>
+					<span class="listHeading">Email Address :</span><br/><input id="login_email" type="email" name="login_email"><br/><span class="listHeading">Password:</span><br/><span><input name="login_password" type="password" id="login_password"/></span><br/>
+					<br/>
+					<div class="rightAlign">
+						<div id="formButtons">
+							<span id="login_register_link" style="display:none">
+							</span>
+							<img alt="Cancel" border="0" onmouseover="this.src='images/newbutton_cancel-over.png'" onmouseout="this.src='images/newbutton_cancel-up.png'" id="Img1" src="images/newbutton_cancel-up.png" onclick='AMController.cancel()'/><a href="javascript:;" onclick="AMController.login(0)"><img name="SubmitButton" id="LoginSubmitButton" text="Register" onmouseover="this.src='images/newbutton_submit-over.png'" onmouseout="this.src='images/newbutton_submit-up.png'" src="images/newbutton_submit-up.png" style="border-width: 0px;"></a>
+							<!--<a href='javascript:;' onclick='AMController.removeData()'><img src='images/button_remove-up.png' onmouseover="this.src='images/button_remove-over.png'" onmouseout="this.src='images/button_remove-up.png'" border='0'/></a>-->
+							<br/>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+	</div>
+
+	<script>
+        if (window.attachEvent) {
+            var evt = document.createEvent();
+            evt.initEvent("DOMContentLoaded");
+            document.dispatchEvent(evt);
+        }
+
+
+
+window.scrollTo(0, 1);
+	</script>
+	</body>
+</div>
+</html>

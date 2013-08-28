@@ -29,7 +29,7 @@ $html = <<<HTML
 			</div>
 			<div data-role="collapsible" data-collapsed="true">
 				<h3>Debug</h3>
-				<button onclick="ddebug('debug message');">Send Debug Message</button>
+				<button onclick="ddebug('debug message'); alert('sent');">Send Debug Message</button>
 			</div>
 		</div>
 	</div>
