@@ -10,7 +10,8 @@ var onDeviceReady=function(){
 	//hide the splash screen
 	AppMobi.device.hideSplashScreen();
 	AppMobi.device.managePower(true,false); //When app is open, dont go to sleep
-	AppMobi.notification.checkPushUser('spgwhistler', 'spgwhistler');
+	AppMobi.notification.checkPushUser('tpetty', 'tpetty');
+	$('#buttons_footer').html(__testApp.settings.build + ' AMCv' + AppMobi.device.appmobiversion);
 };
 document.addEventListener("appMobi.device.ready",onDeviceReady,false);
 
@@ -18,17 +19,15 @@ document.addEventListener("appMobi.device.ready",onDeviceReady,false);
 var didAdd = false;
 var tmpEvts = [];
 var notificationsRegistered=function(event) {
-	ddebug('in notifications registered func');
-	ddebug(event);
 	//This is first called from the checkPushUser event above.
 	//If a user is not found, success = false, and this tries to add that user.
 	if(event.success === false) {
 		if (didAdd === false) {
-			ddebug('doing add user');
 			didAdd = true;
 			//AppMobi.notification.alert("Doing addPushUser now...","My Message","OK");
 			//Try adding the user now - sending unique user id, password, and email address.
-			AppMobi.notification.addPushUser('spgwhistler', 'spgwhistler', 'spgwhistler@gmail.com');
+			ddebug('adding new push user');
+			AppMobi.notification.addPushUser('tpetty', 'tpetty', 'tony@wylei.com');
 			//This will fire the push.enable event again, so that is why we use didAdd to make sure
 			//we dont add the user twice if this fails for any reason.
 			return;
@@ -37,17 +36,21 @@ var notificationsRegistered=function(event) {
 		return;
 	}
 	var msg = event.message || 'success';
+	ddebug('push registered event: ' + event.success);
 	//AppMobi.notification.alert("Notifications Enabled: " + event.message + "\n" + AppMobi.device.uuid,"My Message","OK");
 }
 document.addEventListener("appMobi.notification.push.enable",notificationsRegistered,false);
 
 /*
 document.addEventListener("appMobi.notification.push.receive", function(){
+	console.log('got push message');
 	var myNotifications=AppMobi.notification.getNotificationList();
+	console.log(myNotifications);
 	var len=myNotifications.length;
 	if(len > 0) {
 		for(i=0; i < len; i++) {
 			msgObj=AppMobi.notification.getNotificationData(myNotifications[i]);
+			console.log(msgObj);
 		}
 	}
 }, false);
@@ -61,6 +64,28 @@ document.addEventListener("wylei.ready", function(d){
 function doOptimize(){
 	ddebug('doing optimize');
 	wylei.optimizer.optimizeEvent('level-5');
+}
+
+function doFakePush(){
+	var bundle = {"event_name":"push1","event_type":"pushmsg","onetime_offer":false,"offers":[{"modal_title":"achievement modal title","modal_message":"achievement modal message","asks":[{"type":"pushmsg","modal_title":"push modal title","modal_message":"push modal message"}],"incentives":[{"type":"inapp_currency","key":"tokens","value":50,"modal_title":"inapp modal title","modal_message":"inapp modal message"}]}]};
+	wylei.optimizer.optimizeEvent(bundle);
+};
+
+function doWyleiPush(){
+	var d = new Date();
+	var url = 'https://webservices.appmobi.com/pushmobi.aspx?CMD=SendBroadcastMessage';
+	url += '&authuser=tpetty@appmobi.com';
+	url += '&authpw=qwerty1!';
+	url += '&appname=' + AppMobi.app;
+	url += '&msg=' + d.getHours() + ':' + d.getMinutes();
+	var bundle = {"event_name":"push1","event_type":"pushmsg","onetime_offer":false,"offers":[{"modal_title":"achievement modal title","modal_message":"achievement modal message","asks":[{"type":"pushmsg","modal_title":"push modal title","modal_message":"push modal message"}],"incentives":[{"type":"inapp_currency","key":"tokens","value":50,"modal_title":"inapp modal title","modal_message":"inapp modal message"}]}]};
+	bundle = encodeURIComponent(JSON.stringify(bundle));
+	if ($('#inc_bundle:checked').val()) {
+		url += '&data=' + bundle;
+	}
+	ddebug(url);
+	_wyleiSupport.getUrl(url);
+	alert('sent');
 }
 
 function twitterAvail(){
@@ -160,5 +185,60 @@ function onetouch_restore(){
 	OneTouch.restore(function(){
 		ddebug('1touch restore callback');
 		ddebug(arguments);
+	});
+};
+
+function appdata_save(){
+	ddebug('doing appdata save');
+	wylei.appdata.save({
+		key: 'testkey',
+		value: 'testvalue',
+		user_id: 'testuserid',
+		callback: function(){
+			ddebug('in appdata save callback');
+			ddebug(arguments);
+		}
+	});
+};
+function appdata_get(){
+	ddebug('doing appdata get');
+	wylei.appdata.get({
+		key: 'testkey',
+		user_id: 'testuserid',
+		callback: function(){
+			ddebug('in appdata get callback');
+			ddebug(arguments);
+		}
+	});
+};
+function appdata_getall(){
+	ddebug('doing appdata getall');
+	wylei.appdata.getall({
+		user_id: 'testuserid',
+		callback: function(){
+			ddebug('in appdata getall callback');
+			ddebug(arguments);
+		}
+	});
+};
+function appdata_deletekey(){
+	ddebug('doing appdata deletekey');
+	wylei.appdata.getall({
+		key: 'testkey',
+		user_id: 'testuserid',
+		callback: function(){
+			ddebug('in appdata deletekey callback');
+			ddebug(arguments);
+		}
+	});
+};
+function appdata_deleteall(){
+	ddebug('doing appdata deleteall');
+	wylei.appdata.getall({
+		user_id: 'testuserid',
+		callback: function(){
+			ddebug('in appdata deleteall callback');
+			ddebug(arguments);
+		}
 	});
 };
