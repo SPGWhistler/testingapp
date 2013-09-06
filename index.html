@@ -11,8 +11,8 @@ var __testApp = {
 		office: false, //In office, or at home
 		prod: false, //Use the production scripts or local scripts
 		debug: true, //Add debug console script
-		minified: true, //Use the minified versions
-		build: 'v0.1.[!~DATE-YMDHis~!]', //The build version and date
+		minified: false, //Use the minified versions
+		build: 'v0.1.20130906155512', //The build version and date [AR:YDHis] <-- This is what my funciton looks for to auto replace the date
 		timers: {
 			appMobi: 4500, //Milliseconds (from __testApp.init) to wait for appMobi js to fire its ready event
 			wylei: 4600, //Milliseconds (from __testApp.init) to wait for wylei js to fire its ready event
