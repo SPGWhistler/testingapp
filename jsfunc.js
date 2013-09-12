@@ -313,8 +313,31 @@ function leaderboards_getRange(){
 
 function facebook_friends(){
 	ddebug('doing facebook friends request');
-	facebookAPI.friends("", function(){
+	facebookAPI.friends("", function(data){
 		ddebug('facebook friends callback');
-		ddebug(arguments);
+		ddebug(data);
+		for (var i in data.data) {
+			var name = data.data[i].name;
+			var id = data.data[i].id;
+			var pic = facebookAPI.picture(data.data[i].id);
+			var html = "<li><a data-fb-id='" + id + "' data-fb-name='" + name + "' href='#'><img src='" + pic + "'><h2>" + name + "</h2></a></li>";
+			$('#fbfriendslist').append(html);
+		}
+		$('#fbfriendslist').listview("refresh");
+		$('#fbfriendslist a').click(function(){
+			var $obj = $(this);
+			ddebug($obj.data('fb-name'));
+			ddebug($obj.data('fb-id'));
+			facebookAPI.post({
+				"to": $obj.data('fb-id'),
+				"name":"test name",
+				"caption":"Hello, please use this awesome app",
+				"description":"test description",
+				"link":"http://www.google.com"
+			}, function(){
+				ddebug('post callback');
+				ddebug(arguments);
+			});
+		});
 	});
 }

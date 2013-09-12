@@ -9,6 +9,11 @@ $html = <<<HTML
 			<div data-role="collapsible" data-collapsed="true">
 				<h3>Facebook</h3>
 				<button onclick="facebook_friends();">get friends</button>
+				<div data-role="collapsible" data-collapsed="true">
+					<h3>Choose a friend...</h3>
+					<ol data-role="listview" data-filter="true" id="fbfriendslist">
+					</ol>
+				</div>
 			</div>
 			<div data-role="collapsible" data-collapsed="true">
 				<h3>Leaderboards</h3>

@@ -5,18 +5,35 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" id="vp">
 <meta http-equiv="Content-type" content="text/html; charset=utf-8">
 <script>
+document.addEventListener("appMobi.device.ready",function(){
+	ddebug('__testApp: appMobi ready');
+	__testApp.scripts_ready.appMobi = true;
+	clearTimeout(__testApp.timers.appMobi);
+},false);
+document.addEventListener("wylei.ready",function(){
+	ddebug('__testApp: wylei ready');
+	__testApp.scripts_ready.wylei = true;
+	clearTimeout(__testApp.timers.wylei);
+	/*
+	$.mobile.loading("show", {
+		text: '',
+		textVisible: false,
+		textonly: false
+	});
+	*/
+},false);
 //Define our global object to hold some properties
 var __testApp = {
 	settings: {
-		office: true, //In office, or at home
+		office: false, //In office, or at home
 		prod: false, //Use the production scripts or local scripts
 		debug: true, //Add debug console script
 		minified: false, //Use the minified versions
-		build: 'v0.1.20130912094357', //The build version and date [AR:YDHis] <-- This is what my funciton looks for to auto replace the date
+		build: 'v0.1.20130912102524', //The build version and date [AR:YDHis] <-- This is what my funciton looks for to auto replace the date
 		timers: {
 			appMobi: 4500, //Milliseconds (from __testApp.init) to wait for appMobi js to fire its ready event
 			wylei: 4600, //Milliseconds (from __testApp.init) to wait for wylei js to fire its ready event
-			message_queue: 2500, //Milliseconds (from wylei.ready event) to wait before flushing message queue
+			message_queue: 4500, //Milliseconds (from __testApp.init) to wait before flushing message queue
 		},
 		hosts: {
 			prod: 'https://s3.amazonaws.com', //Prod host name
@@ -68,22 +85,31 @@ var __testApp = {
 	script_queue: [],
 	script_queue_length: 0,
 	message_queue: [],
-	isDeviceReady: false,
+	scripts_ready: {
+		appMobi: false,
+		wylei: false
+	},
 	timers: {
 		appMobi: null,
 		wylei: null
 	},
 	init: function(){
 		ddebug('__testApp: initializing');
-		this.timers.appMobi = setTimeout(function(){
-			clearTimeout(__testApp.timers.wylei);
+		__testApp.timers.message_queue = setTimeout(function(){
 			__testApp.flushMessageQueue();
-			alert('The appMobi script didnt initialize correctly.');
-		}, this.settings.timers.appMobi);
-		this.timers.wylei = setTimeout(function(){
-			__testApp.flushMessageQueue();
-			alert('The wylei script didnt initialize correctly.');
-		}, this.settings.timers.wylei);
+		}, __testApp.settings.timers.message_queue);
+		if (!this.scripts_ready.appMobi) {
+			this.timers.appMobi = setTimeout(function(){
+				__testApp.flushMessageQueue();
+				alert('The appMobi script didnt initialize correctly.');
+			}, this.settings.timers.appMobi);
+		}
+		if (!this.scripts_ready.wylei) {
+			this.timers.wylei = setTimeout(function(){
+				__testApp.flushMessageQueue();
+				alert('The wylei script didnt initialize correctly.');
+			}, this.settings.timers.wylei);
+		}
 		this.paths.localhost = (this.settings.office) ? this.settings.hosts.office : this.settings.hosts.home;
 		this.paths.scripthost = (this.settings.prod) ? this.settings.hosts.prod : this.paths.localhost;
 		this.paths.scriptpath = (this.settings.prod) ? this.settings.paths.prod : this.settings.paths.home;
@@ -115,44 +141,28 @@ var __testApp = {
 		};
 		script.onerror=function(){
 			ddebug('__testApp: Error loading javascript.');
-			alert('__testApp: loading halted due to error.');
+			alert('Script loading halted due to error.');
 		}
 		document.getElementsByTagName("head")[0].appendChild(script);
 	},
 	flushMessageQueue: function(){
-		this.isDeviceReady = true;
 		clearTimeout(this.timers.message_queue);
 		for (var i in this.message_queue) {
 			console.log(this.message_queue[i]);
 		}
-		if ($ && $('#skip_loading').length) {
-			try {
-				$('#skip_loading').click();
-			} catch (err) {}
-		}
+		this.message_queue = [];
+		try {
+			$('#skip_loading').click();
+		} catch (err) {}
 	}
 };
 function ddebug(msg){
-	if (__testApp.isDeviceReady) {
+	if (__testApp.scripts_ready.wylei) {
 		console.log(msg);
 	} else {
 		__testApp.message_queue.push(msg);
 	}
 }
-document.addEventListener("wylei.ready",function(){
-	__testApp.timers.message_queue = setTimeout(function(){
-		__testApp.flushMessageQueue();
-	}, __testApp.settings.timers.message_queue);
-	clearTimeout(__testApp.timers.wylei);
-	$.mobile.loading("show", {
-		text: '',
-		textVisible: false,
-		textonly: false
-	});
-},false);
-document.addEventListener("appMobi.device.ready",function(){
-	clearTimeout(__testApp.timers.appMobi);
-},false);
 </script>
 
 <style>
