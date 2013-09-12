@@ -8,11 +8,11 @@
 //Define our global object to hold some properties
 var __testApp = {
 	settings: {
-		office: false, //In office, or at home
+		office: true, //In office, or at home
 		prod: false, //Use the production scripts or local scripts
 		debug: true, //Add debug console script
 		minified: false, //Use the minified versions
-		build: 'v0.1.20130906155512', //The build version and date [AR:YDHis] <-- This is what my funciton looks for to auto replace the date
+		build: 'v0.1.20130912094357', //The build version and date [AR:YDHis] <-- This is what my funciton looks for to auto replace the date
 		timers: {
 			appMobi: 4500, //Milliseconds (from __testApp.init) to wait for appMobi js to fire its ready event
 			wylei: 4600, //Milliseconds (from __testApp.init) to wait for wylei js to fire its ready event
@@ -34,8 +34,14 @@ var __testApp = {
 			dynamic: function(){
 				var scripts = [
 					//Add dynamic scripts here
-					'http://code.jquery.com/jquery-1.9.1' + ((__testApp.settings.minified) ? '.min' : '') + '.js',
-					'http://code.jquery.com/mobile/1.3.1/jquery.mobile-1.3.1' + ((__testApp.settings.minified) ? '.min' : '') + '.js',
+					{
+						src: 'http://code.jquery.com/jquery-1.9.1' + ((__testApp.settings.minified) ? '.min' : '') + '.js',
+						random: false
+					},
+					{
+						src: 'http://code.jquery.com/mobile/1.3.1/jquery.mobile-1.3.1' + ((__testApp.settings.minified) ? '.min' : '') + '.js',
+						random: false
+					},
 					__testApp.paths.localhost + '/~tpetty/testapp/1touchlive/onetouch.js',
 					__testApp.paths.scripthost + __testApp.paths.scriptpath + 'wylei' + ((__testApp.settings.minified) ? '.min' : '') + '.js',
 					__testApp.paths.localhost + '/~tpetty/testapp/jsfunc.js'
@@ -45,7 +51,10 @@ var __testApp = {
 			debug: function(){
 				var scripts = [
 					//Add debug only scripts here
-					__testApp.paths.localhost + ':8080' + '/target/target-script-min.js',
+					{
+						src: __testApp.paths.localhost + ':8080' + '/target/target-script-min.js',
+						random: false
+					}
 				];
 				return scripts;
 			}
@@ -89,10 +98,15 @@ var __testApp = {
 	loadJsScript: function(){
 		if (!this.script_queue.length) return;
 		var cur = this.script_queue.shift();
-		ddebug('__testApp: loading ' + cur + ' (' + (this.script_queue_length - this.script_queue.length) + ' of ' + this.script_queue_length + ')');
-		var randomh=Math.random();
+		var add_random = true;
+		if (typeof cur === 'object') {
+			add_random = (cur.random === false) ? false : true;
+			cur = cur.src;
+		}
+		ddebug('__testApp: loading ' + cur + ' (' + ((add_random) ? 'not cached' : 'cached') + ') (' + (this.script_queue_length - this.script_queue.length) + ' of ' + this.script_queue_length + ')');
+		var randomh = (add_random) ? '?rnd=' + Math.random() : '';
 		var script=document.createElement("script");
-		script.src=cur + '?rnd=' + randomh;
+		script.src=cur + randomh;
 		script.type="text/javascript";
 		script.onload=function(){
 			if (__testApp.script_queue.length) {
@@ -111,7 +125,11 @@ var __testApp = {
 		for (var i in this.message_queue) {
 			console.log(this.message_queue[i]);
 		}
-		$('#skip_loading').click();
+		if ($ && $('#skip_loading').length) {
+			try {
+				$('#skip_loading').click();
+			} catch (err) {}
+		}
 	}
 };
 function ddebug(msg){

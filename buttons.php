@@ -2,10 +2,27 @@
 $html = <<<HTML
 <div data-role="page" id="page2">
 	<div data-role="header" data-position="fixed">
-		<h1>Unscrambler</h1>
+		<h1 id="headertxt"></h1>
 	</div>
 	<div data-role="content">
-		<div data-role="collapsible-set" data-theme="c" data-content-theme="d">
+		<div id="buttons_accordion" data-role="collapsible-set" data-theme="c" data-content-theme="d">
+			<div data-role="collapsible" data-collapsed="true">
+				<h3>Facebook</h3>
+				<button onclick="facebook_friends();">get friends</button>
+			</div>
+			<div data-role="collapsible" data-collapsed="true">
+				<h3>Leaderboards</h3>
+				<button onclick="leaderboards_getPlayerScore();">getPlayerScore</button>
+				<button onclick="leaderboards_save();">save</button>
+				<button onclick="leaderboards_getRange();">getRange</button>
+			</div>
+			<div data-role="collapsible" data-collapsed="true">
+				<h3>Achievements</h3>
+				<button onclick="achievements_earn();">Earn</button>
+				<button onclick="achievements_check();">Check</button>
+				<button onclick="achievements_get('light_snack');">Get (light_snack)</button>
+				<button onclick="achievements_get();">Get (random)</button>
+			</div>
 			<div data-role="collapsible" data-collapsed="true">
 				<h3>Appdata</h3>
 				<button onclick="appdata_save();">Save</button>
@@ -35,7 +52,7 @@ $html = <<<HTML
 				<button onclick="doWyleiPush();">Do Push</button>
 				<button onclick="AppMobi.notifications.refreshPushNotifications(); alert('did refresh');">Refresh</button>
 			</div>
-			<div data-role="collapsible" data-collapsed="true">
+			<div id="login_section" data-role="collapsible" data-collapsed="true">
 				<h3>Login</h3>
 				<button onclick="login();">Login</button>
 				<button onclick="login('silent', {'provider' : 'tpettytest','provider_id' : '12344321','email' : 'tpettytest@appmobi.com','screen_name' : 'Tony Petty'});">Silent Login</button>

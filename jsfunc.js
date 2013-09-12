@@ -11,7 +11,9 @@ var onDeviceReady=function(){
 	AppMobi.device.hideSplashScreen();
 	AppMobi.device.managePower(true,false); //When app is open, dont go to sleep
 	AppMobi.notification.checkPushUser('tpetty', 'tpetty');
-	$('#buttons_footer').html(__testApp.settings.build + ' AMCv' + AppMobi.device.appmobiversion);
+	var footer_txt = __testApp.settings.build + ' AMCv' + AppMobi.device.appmobiversion;
+	ddebug('settings footer to: ' + footer_txt);
+	$('#buttons_footer').html(footer_txt);
 };
 document.addEventListener("appMobi.device.ready",onDeviceReady,false);
 
@@ -38,7 +40,7 @@ var notificationsRegistered=function(event) {
 	var msg = event.message || 'success';
 	ddebug('push registered event: ' + event.success);
 	//AppMobi.notification.alert("Notifications Enabled: " + event.message + "\n" + AppMobi.device.uuid,"My Message","OK");
-}
+};
 document.addEventListener("appMobi.notification.push.enable",notificationsRegistered,false);
 
 /*
@@ -69,7 +71,7 @@ function doOptimize(){
 function doFakePush(){
 	var bundle = {"event_name":"push1","event_type":"pushmsg","onetime_offer":false,"offers":[{"modal_title":"achievement modal title","modal_message":"achievement modal message","asks":[{"type":"pushmsg","modal_title":"push modal title","modal_message":"push modal message"}],"incentives":[{"type":"inapp_currency","key":"tokens","value":50,"modal_title":"inapp modal title","modal_message":"inapp modal message"}]}]};
 	wylei.optimizer.optimizeEvent(bundle);
-};
+}
 
 function doWyleiPush(){
 	var d = new Date();
@@ -90,7 +92,7 @@ function doWyleiPush(){
 
 function twitterAvail(){
 	AppMobi.exec("AppMobiTwitter.available");
-};
+}
 document.addEventListener("appMobi.twitter.available", function(evt){
 	if (evt.available === true) {
 		//User has twitter installed
@@ -142,7 +144,7 @@ document.addEventListener("appMobi.twitter.busy", function(evt){
 }, false);
 
 function twitterTweet(){
-	var d = new Date;
+	var d = new Date();
 	var t = d.getTime();
 	var update = { "status" : "Testing new auth" + t };
 	alert('about to tweet: ' + update.status);
@@ -163,8 +165,10 @@ document.addEventListener("wylei.user.login",function(e){
 	ddebug('login success event received');
 	if (e.success) {
 		$('#message').html('hi ' + e.userinfo.name + ', you are logged in. Id: ' + e.userinfo.id);
+		$('#headertxt').html('Unscrambler - ' + e.userinfo.name);
 	} else {
 		$('#message').html('not logged in');
+		$('#headertxt').html('Unscrambler');
 	}
 },false);
 
@@ -179,66 +183,138 @@ function onetouch(){
 		ddebug(arguments);
 		alert('fail');
 	});
-};
+}
 function onetouch_restore(){
 	ddebug('doing 1touch restore');
 	OneTouch.restore(function(){
 		ddebug('1touch restore callback');
 		ddebug(arguments);
 	});
-};
+}
 
 function appdata_save(){
 	ddebug('doing appdata save');
 	wylei.appdata.save({
 		key: 'testkey',
 		value: 'testvalue',
-		user_id: 'testuserid',
+		user_id: '7515861f-03a1-4cfd-af30-3e142a185312',
 		callback: function(){
 			ddebug('in appdata save callback');
 			ddebug(arguments);
 		}
 	});
-};
+}
 function appdata_get(){
 	ddebug('doing appdata get');
 	wylei.appdata.get({
 		key: 'testkey',
-		user_id: 'testuserid',
+		user_id: '7515861f-03a1-4cfd-af30-3e142a185312',
 		callback: function(){
 			ddebug('in appdata get callback');
 			ddebug(arguments);
 		}
 	});
-};
+}
 function appdata_getall(){
 	ddebug('doing appdata getall');
 	wylei.appdata.getall({
-		user_id: 'testuserid',
+		user_id: '7515861f-03a1-4cfd-af30-3e142a185312',
 		callback: function(){
 			ddebug('in appdata getall callback');
 			ddebug(arguments);
 		}
 	});
-};
+}
 function appdata_deletekey(){
 	ddebug('doing appdata deletekey');
-	wylei.appdata.getall({
+	wylei.appdata.deletekey({
 		key: 'testkey',
-		user_id: 'testuserid',
+		user_id: '7515861f-03a1-4cfd-af30-3e142a185312',
 		callback: function(){
 			ddebug('in appdata deletekey callback');
 			ddebug(arguments);
 		}
 	});
-};
+}
 function appdata_deleteall(){
 	ddebug('doing appdata deleteall');
-	wylei.appdata.getall({
-		user_id: 'testuserid',
+	wylei.appdata.deleteall({
+		user_id: '7515861f-03a1-4cfd-af30-3e142a185312',
 		callback: function(){
 			ddebug('in appdata deleteall callback');
 			ddebug(arguments);
 		}
 	});
-};
+}
+
+function achievements_earn(){
+	ddebug('doing achievements earn');
+	wylei.gamification.achievements.earn({
+		id: 'light_snack',
+		callback: function(){
+			ddebug('achievements earn callback');
+			ddebug(arguments);
+		}
+	});
+}
+function achievements_check(){
+	ddebug('doing achievements check');
+	var res = wylei.gamification.achievements.check({
+		id: 'light_snack',
+		callback: function(){
+			ddebug('achievements check callback');
+			ddebug(arguments);
+		}
+	});
+	ddebug('achievements check return: ' + res);
+}
+function achievements_get(id){
+	ddebug('doing achievements get');
+	var res = wylei.gamification.achievements.get(id);
+	ddebug(res);
+}
+
+function leaderboards_getPlayerScore(){
+	ddebug('doing leaderboards getPlayerScore');
+	wylei.gamification.leaderboards.getPlayerScore({
+		leaderboard: 'myleaderboard',
+		rows_above: 5,
+		rows_below: 5,
+		callback: function(){
+			ddebug('leaderboards getPlayerScore callback');
+			ddebug(arguments);
+		}
+	});
+}
+function leaderboards_save(){
+	ddebug('doing leaderboards save');
+	wylei.gamification.leaderboards.save({
+		leaderboard: 'myleaderboard',
+		score: 5,
+		mode: 'l',
+		callback: function(){
+			ddebug('leaderboards save callback');
+			ddebug(arguments);
+		}
+	});
+}
+function leaderboards_getRange(){
+	ddebug('doing leaderboards getRange');
+	wylei.gamification.leaderboards.getRange({
+		leaderboard: 'myleaderboard',
+		offset: 1,
+		limit: 5,
+		callback: function(){
+			ddebug('leaderboards getRange callback');
+			ddebug(arguments);
+		}
+	});
+}
+
+function facebook_friends(){
+	ddebug('doing facebook friends request');
+	facebookAPI.friends("", function(){
+		ddebug('facebook friends callback');
+		ddebug(arguments);
+	});
+}

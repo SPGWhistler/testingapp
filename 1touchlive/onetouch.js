@@ -52,14 +52,14 @@
 
 					var evt = document.createEvent("Event");
 					evt.initEvent("appMobi.purchasing.complete", true, true);
-					if (e.data['order_id']) {
+					if (e.data.order_id) {
 						evt.success = true;
 						for (var j in e.data) {
 							evt[j] = e.data[j];
 						}
 					} else {
 						evt.success = "false";
-						evt.message = data['error_message'];
+						evt.message = data.error_message;
 					}
 					document.dispatchEvent(evt);
 				},
@@ -72,7 +72,7 @@
 					this.fbListenerCreated = true;
 					parent.postMessage(data, location.protocol + '//fb.appmobi.com');
 				}
-			}
+			};
 		} else if (AppMobi.ischrome) {
 			AppMobi.purchasing = {
 				purchaseProduct: function(product_id, quantity, user_id) {
@@ -82,7 +82,7 @@
 							seller_data: data,
 							jwt: "" + obj.Thing,
 							success: function() {
-								googCBHandler(true)
+								googCBHandler(true);
 							},
 							failure: function(msg) {
 								googCBHandler(false, "There was an error completing your Google In-App payments");
@@ -128,10 +128,10 @@ var OneTouch = (function() {
 				failCallback = failcb;
 			if (use1Touch === undefined)
 				use1Touch = "";
-			if (prod_id.length == 0) return AppMobi.notification.alert("Please enter a product id");
-			if (quant.length == 0) return AppMobi.notification.alert("Please enter a quantify");
-			if (cb.toString().length == 0 || typeof(cb) != "function") return AppMobi.notification.alert("Please enter a callback for this purchase");
-			if (!userID || userID == "" || (use1Touch && AppMobi.cache.getCookie("OneTouch_TempID") == "true")) {
+			if (prod_id.length === 0) return AppMobi.notification.alert("Please enter a product id");
+			if (quant.length === 0) return AppMobi.notification.alert("Please enter a quantify");
+			if (cb.toString().length === 0 || typeof(cb) != "function") return AppMobi.notification.alert("Please enter a callback for this purchase");
+			if (!userID || userID === "" || (use1Touch && AppMobi.cache.getCookie("OneTouch_TempID") === "true")) {
 				if (use1Touch) {
 					AppMobi.device.showRemoteSite(AppMobi.webRoot + "1touch/1touch.html?merge=" + encodeURIComponent(AppMobi.cache.getCookie("OneTouch_UserID")), window.innerWidth - 91, 0, 91, 72);
 					var that = this;
@@ -142,8 +142,8 @@ var OneTouch = (function() {
 					var pw = AppMobi.device.uuid.substring(0, 30);
 
 					ota.register(tmpID, pw, function(data) {
-						if (data['success']) {
-							OneTouchWorker.setUserKey(data['userkey']);
+						if (data.success) {
+							OneTouchWorker.setUserKey(data.userkey);
 							AppMobi.cache.setCookie("OneTouch_TempID", true, -1);
 							OneTouchWorker.initPurchase();
 
@@ -166,11 +166,11 @@ var OneTouch = (function() {
 			if (!available) return AppMobi.notification.alert("1Touch is not available");
 			if (!this.appName) return AppMobi.notification.alert("App name is not configured");
 
-			if (!userID || userID == "") {
+			if (!userID || userID === "") {
 				AppMobi.device.showRemoteSite(AppMobi.webRoot + "1touch/1touch.html", window.innerWidth - 91, 0, 91, 72);
 				var that = this;
 				document.addEventListener("appMobi.device.remote.close", OneTouchCloseEvt = function() {
-					that.paymentClose()
+					that.paymentClose();
 				}, false);
 			} else {
 				AppMobi.notification.alert("Already logged into 1Touch");
@@ -186,7 +186,7 @@ var OneTouch = (function() {
 			OneTouchWorker.initPurchase();
 		}
 
-	}
+	};
 	var OneTouchWorker = {
 		paymentClose: function() {
 			document.removeEventListener("appMobi.device.remote.close", OneTouchCloseEvt, true);
@@ -197,15 +197,15 @@ var OneTouch = (function() {
 			AppMobi.cache.removeCookie("OneTouch_TempID");
 		},
 		initPurchase: function() {
-			AppMobi.purchasing.purchaseProduct(product_id, quantitiy, userID)
+			AppMobi.purchasing.purchaseProduct(product_id, quantitiy, userID);
 		},
 		finishPurchase: function(evt) {
 			//Now we need to get the new inventory for that object?
 			if (evt.success) {
-				if (typeof(callback) == "function")
+				if (typeof(callback) === "function")
 					callback(evt.product);
 			} else {
-				if (typeof(failCallback) == "function")
+				if (typeof(failCallback) === "function")
 					failCallback(evt);
 				else
 					AppMobi.notification.alert(evt.message);
@@ -219,7 +219,6 @@ var OneTouch = (function() {
 	document.addEventListener("appMobi.purchasing.complete", OneTouchWorker.finishPurchase, false);
 	document.addEventListener("appMobi.device.ready", function() {
 
-
 		OneTouch.appName = AppMobi.app;
 		userID = AppMobi.cache.getCookie("OneTouch_UserID");
 
@@ -230,7 +229,7 @@ var OneTouch = (function() {
 		script.onload = function() {
 			ota = new OneTouchAuth(AppMobi.app);
 			available = true;
-		}
+		};
 		document.getElementsByTagName("head")[0].appendChild(script);
 	}, false);
 	return OneTouch;
