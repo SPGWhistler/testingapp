@@ -7,7 +7,6 @@ jQuery('#page1').on('pageinit', function (event) {
 
 var serviceName = "twitter";
 var onDeviceReady = function () {
-	ddebug('device ready');
 	//hide the splash screen
 	AppMobi.device.hideSplashScreen();
 	AppMobi.device.managePower(true, false); //When app is open, dont go to sleep
@@ -58,7 +57,6 @@ document.addEventListener("appMobi.notification.push.receive", function () {
 */
 
 document.addEventListener("wylei.ready", function (d) {
-	ddebug('wylei ready');
 	wylei.user.login(true);
 }, false);
 

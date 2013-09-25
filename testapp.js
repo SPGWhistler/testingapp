@@ -1,4 +1,4 @@
-/*global alert, $, AppMobi */
+/*global alert, $, AppMobi, wylei */
 var __testApp = __testApp || {};
 function ddebug(msg) {
 	if (__testApp.scripts_ready.wylei) {
@@ -25,7 +25,7 @@ __testApp.settings = {
 	prod: false, //Use the production scripts or local scripts
 	debug: true, //Add debug console script
 	minified: false, //Use the minified versions
-	build_date: '25/09/2013 15:22:05', //The build date [AR:D/M/Y H:i:s] <-- This is what my funciton looks for to auto replace the date
+	build_date: '25/09/2013 15:50:30', //The build date [AR:D/M/Y H:i:s] <-- This is what my funciton looks for to auto replace the date
 	build_version: '1.1', //The build version
 	timers: {
 		appMobi: 4500, //Milliseconds (from __testApp.init) to wait for appMobi js to fire its ready event
@@ -104,14 +104,26 @@ __testApp.init = function () {
 	}, __testApp.settings.timers.message_queue);
 	if (!this.scripts_ready.appMobi) {
 		this.timers.appMobi = setTimeout(function () {
+			if (!AppMobi) {
+				ddebug('__testApp: The appmobi script didnt load.');
+				alert('The appMobi script didnt load.');
+			} else {
+				ddebug('__testApp: The appmobi script didnt initialize in time.');
+			}
 			__testApp.flushMessageQueue();
-			alert('The appMobi script didnt initialize correctly.');
 		}, this.settings.timers.appMobi);
 	}
 	if (!this.scripts_ready.wylei) {
 		this.timers.wylei = setTimeout(function () {
 			__testApp.flushMessageQueue();
-			alert('The wylei script didnt initialize correctly.');
+			if (!wylei) {
+				ddebug('__testApp: The wylei script didnt load.');
+				alert('The wylei script didnt load.');
+			} else if (!wylei.initialized) {
+				ddebug('__testApp: The wylei script didnt initialize in time.');
+			} else {
+				ddebug('__testApp: The wylei script didnt fire its ready event in time.');
+			}
 		}, this.settings.timers.wylei);
 	}
 	this.paths.localhost = (this.settings.office) ? this.settings.hosts.office : this.settings.hosts.home;
