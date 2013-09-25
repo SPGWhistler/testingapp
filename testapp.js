@@ -27,7 +27,7 @@ __testApp.settings = {
 	prod: false, //Use the production scripts or local scripts
 	debug: true, //Add debug console script
 	minified: false, //Use the minified versions
-	build_date: '25/09/2013 15:50:39', //The build date [AR:D/M/Y H:i:s] <-- This is what my funciton looks for to auto replace the date
+	build_date: '25/09/2013 16:27:37', //The build date [AR:D/M/Y H:i:s] <-- This is what my funciton looks for to auto replace the date
 	build_version: '1.1', //The build version
 	timers: {
 		appMobi: 4500, //Milliseconds (from __testApp.init) to wait for appMobi js to fire its ready event
@@ -100,13 +100,14 @@ __testApp.timers = {
 };
 
 __testApp.init = function () {
+	var self = this;
 	ddebug('__testApp: initializing');
 	__testApp.timers.message_queue = setTimeout(function () {
 		__testApp.flushMessageQueue();
 	}, __testApp.settings.timers.message_queue);
 	if (!this.scripts_ready.appMobi) {
 		this.timers.appMobi = setTimeout(function () {
-			if (!AppMobi) {
+			if (typeof AppMobi === 'undefined') {
 				ddebug('__testApp: The appmobi script didnt load.');
 				alert('The appMobi script didnt load.');
 			} else {
@@ -118,7 +119,7 @@ __testApp.init = function () {
 	if (!this.scripts_ready.wylei) {
 		this.timers.wylei = setTimeout(function () {
 			__testApp.flushMessageQueue();
-			if (!wylei) {
+			if (typeof wylei === 'undefined') {
 				ddebug('__testApp: The wylei script didnt load.');
 				alert('The wylei script didnt load.');
 			} else if (!wylei.initialized) {
@@ -128,16 +129,19 @@ __testApp.init = function () {
 			}
 		}, this.settings.timers.wylei);
 	}
-	this.paths.localhost = (this.settings.office) ? this.settings.hosts.office : this.settings.hosts.home;
-	this.paths.scripthost = (this.settings.prod) ? this.settings.hosts.prod : this.paths.localhost;
-	this.paths.scriptpath = (this.settings.prod) ? this.settings.paths.prod : this.settings.paths.home;
-	this.script_queue = this.settings.scripts.static;
-	Array.prototype.push.apply(this.script_queue, this.settings.scripts.dynamic());
-	if (this.settings.debug) {
-		Array.prototype.push.apply(this.script_queue, this.settings.scripts.debug());
-	}
-	this.script_queue_length = this.script_queue.length;
-	this.loadJsScript();
+	this.jsonp.get('http://tpetty.remote.staging.appmobi.com/testingapp/location.php', {}, function (location) {
+		self.office = (location === 'office') ? true : false;
+		self.paths.localhost = (self.settings.office) ? self.settings.hosts.office : self.settings.hosts.home;
+		self.paths.scripthost = (self.settings.prod) ? self.settings.hosts.prod : self.paths.localhost;
+		self.paths.scriptpath = (self.settings.prod) ? self.settings.paths.prod : self.settings.paths.home;
+		self.script_queue = self.settings.scripts.static;
+		Array.prototype.push.apply(self.script_queue, self.settings.scripts.dynamic());
+		if (self.settings.debug) {
+			Array.prototype.push.apply(self.script_queue, self.settings.scripts.debug());
+		}
+		self.script_queue_length = self.script_queue.length;
+		self.loadJsScript();
+	});
 };
 
 __testApp.loadJsScript = function () {
@@ -204,3 +208,66 @@ __testApp.build = function () {
 	}
 	return str;
 };
+
+__testApp.jsonp = (function () {
+	var counter = 0, head, window = this, config = {};
+
+	function load(url, pfnError) {
+		var script = document.createElement('script'), done = false, errorHandler = pfnError || config.error;
+		script.src = url;
+		script.async = true;
+		if (typeof errorHandler === 'function') {
+			script.onerror = function (ex) {
+				errorHandler({
+					url: url,
+					event: ex
+				});
+			};
+		}
+		script.onload = script.onreadystatechange = function () {
+			if (!done && (!this.readyState || this.readyState === "loaded" || this.readyState === "complete")) {
+				done = true;
+				script.onload = script.onreadystatechange = null;
+				if (script && script.parentNode) {
+					script.parentNode.removeChild(script);
+				}
+			}
+		};
+		if (!head) {
+			head = document.getElementsByTagName('head')[0];
+		}
+		head.appendChild(script);
+	}
+
+	function encode(str) {
+		return encodeURIComponent(str);
+	}
+
+	function jsonp(url, params, callback, callbackName) {
+		var query = (((url || '').indexOf('?') === -1) ? '?' : '&'), key, uniqueName = callbackName + "_json" + (counter += 1);
+		callbackName = (callbackName || config.callbackName || 'callback');
+		params = params || {};
+		for (key in params) {
+			if (params.hasOwnProperty(key)) {
+				query += encode(key) + "=" + encode(params[key]) + "&";
+			}
+		}
+		window[uniqueName] = function (data) {
+			callback(data);
+			try {
+				delete window[uniqueName];
+			} catch (e) {}
+			window[uniqueName] = null;
+		};
+		load(url + query + callbackName + '=' + uniqueName);
+		return uniqueName;
+	}
+
+	function setDefaults(obj) {
+		config = obj;
+	}
+	return {
+		get: jsonp,
+		init: setDefaults
+	};
+}());
