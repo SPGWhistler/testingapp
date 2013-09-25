@@ -14,22 +14,16 @@ document.addEventListener("wylei.ready",function(){
 	ddebug('__testApp: wylei ready');
 	__testApp.scripts_ready.wylei = true;
 	clearTimeout(__testApp.timers.wylei);
-	/*
-	$.mobile.loading("show", {
-		text: '',
-		textVisible: false,
-		textonly: false
-	});
-	*/
 },false);
 //Define our global object to hold some properties
 var __testApp = {
 	settings: {
-		office: false, //In office, or at home
+		office: true, //In office, or at home
 		prod: false, //Use the production scripts or local scripts
 		debug: true, //Add debug console script
 		minified: false, //Use the minified versions
-		build: 'v0.1.20130912102524', //The build version and date [AR:YDHis] <-- This is what my funciton looks for to auto replace the date
+		build_date: '25/09/2013 13:27:11', //The build date [AR:D/M/Y H:i:s] <-- This is what my funciton looks for to auto replace the date
+		build_version: '1.0', //The build version
 		timers: {
 			appMobi: 4500, //Milliseconds (from __testApp.init) to wait for appMobi js to fire its ready event
 			wylei: 4600, //Milliseconds (from __testApp.init) to wait for wylei js to fire its ready event
@@ -93,7 +87,7 @@ var __testApp = {
 		appMobi: null,
 		wylei: null
 	},
-	init: function(){
+	init: function () {
 		ddebug('__testApp: initializing');
 		__testApp.timers.message_queue = setTimeout(function(){
 			__testApp.flushMessageQueue();
@@ -121,7 +115,7 @@ var __testApp = {
 		this.script_queue_length = this.script_queue.length;
 		this.loadJsScript();
 	},
-	loadJsScript: function(){
+	loadJsScript: function () {
 		if (!this.script_queue.length) return;
 		var cur = this.script_queue.shift();
 		var add_random = true;
@@ -145,7 +139,17 @@ var __testApp = {
 		}
 		document.getElementsByTagName("head")[0].appendChild(script);
 	},
-	flushMessageQueue: function(){
+	addJsScripts: function (scripts) {
+		for (var i in scripts) {
+			this.script_queue.push({
+				src: scripts[i].src,
+				random: (scripts[i].random === false) ? false : true
+			});
+		}
+		this.script_queue_length = this.script_queue.length;
+		this.loadJsScript();
+	},
+	flushMessageQueue: function () {
 		clearTimeout(this.timers.message_queue);
 		for (var i in this.message_queue) {
 			console.log(this.message_queue[i]);
@@ -154,6 +158,14 @@ var __testApp = {
 		try {
 			$('#skip_loading').click();
 		} catch (err) {}
+	},
+	build: function () {
+		var str;
+		str = 'v:' + this.settings.build_version + ' d:' + this.settings.build_date;
+		if (AppMobi && AppMobi.device) {
+			str += ' amv:' + AppMobi.device.appmobiversion + ' jsv:' + AppMobi.jsVersion;
+		}
+		return str;
 	}
 };
 function ddebug(msg){
@@ -196,7 +208,7 @@ __testApp.init();
 		<a id="skip_loading" href="#page2" onclick="$.mobile.loading('hide');" data-role="button" data-transition="flip">Skip</a>
 	</div>
 	<div data-role="footer" data-position="fixed">
-		<h4><script>document.write(__testApp.settings.build);</script></h4>
+		<h4><script>document.write(__testApp.build());</script></h4>
 	</div>
 </div>
 </body>

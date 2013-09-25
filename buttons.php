@@ -1,5 +1,14 @@
 <?php
 $html = <<<HTML
+<html>
+<head><title></title></head>
+<body>
+<script>
+$("#page2").on("pagecreate", function() {
+	ddebug('page create event');
+	$('#buttons_footer').html(__testApp.build());
+});
+</script>
 <div data-role="page" id="page2">
 	<div data-role="header" data-position="fixed">
 		<h1 id="headertxt"></h1>
@@ -44,6 +53,7 @@ $html = <<<HTML
 			<div data-role="collapsible" data-collapsed="true">
 				<h3>Optimize</h3>
 				<button onclick="doOptimize();">Do Optimize</button>
+				<button onclick="doOptimize(); doOptimize();">Do Optimize Twice</button>
 				<button onclick="doFakePush();">Fake Push</button>
 			</div>
 			<div data-role="collapsible" data-collapsed="true">
@@ -72,6 +82,8 @@ $html = <<<HTML
 			<div data-role="collapsible" data-collapsed="true">
 				<h3>Debug</h3>
 				<button onclick="ddebug('debug message'); alert('sent');">Send Debug Message</button>
+				<button onclick="reload_me();">Reload jsfunc.js</button>
+				<button onclick="reload_page();">Reload This Page</button>
 			</div>
 		</div>
 	</div>
@@ -81,6 +93,12 @@ $html = <<<HTML
 		</h4>
 	</div>
 </div>
+</body>
+</html>
 HTML;
-echo $_GET['callback'] . '(' . json_encode($html) . ')';
+if (isset($_GET['callback'])) {
+	echo $_GET['callback'] . '(' . json_encode($html) . ')';
+} else {
+	echo $html;
+}
 ?>
