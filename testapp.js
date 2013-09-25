@@ -1,5 +1,7 @@
 /*global alert, $, AppMobi, wylei */
+
 var __testApp = __testApp || {};
+
 function ddebug(msg) {
 	if (__testApp.scripts_ready.wylei) {
 		console.log(msg);
@@ -25,7 +27,7 @@ __testApp.settings = {
 	prod: false, //Use the production scripts or local scripts
 	debug: true, //Add debug console script
 	minified: false, //Use the minified versions
-	build_date: '25/09/2013 15:50:30', //The build date [AR:D/M/Y H:i:s] <-- This is what my funciton looks for to auto replace the date
+	build_date: '25/09/2013 15:50:39', //The build date [AR:D/M/Y H:i:s] <-- This is what my funciton looks for to auto replace the date
 	build_version: '1.1', //The build version
 	timers: {
 		appMobi: 4500, //Milliseconds (from __testApp.init) to wait for appMobi js to fire its ready event
