@@ -5,8 +5,19 @@ $html = <<<HTML
 <body>
 <script>
 $("#page2").on("pagecreate", function() {
-	ddebug('page create event');
-	$('#buttons_footer').html(__testApp.build());
+	var d, od, ds;
+	d = new Date();
+	od = new Date();
+	ds = __testApp.settings.build_date;
+	od.setDate(ds.substr(0, 2));
+	od.setMonth((ds.substr(3, 2) - 1));
+	od.setFullYear(ds.substr(6, 4));
+	if (d.getFullYear() !== od.getFullYear()
+			|| d.getMonth() !== od.getMonth()
+			|| d.getDate() !== od.getDate()) {
+		$('#buttons_footer').css('background-image', 'linear-gradient(#3c3c3c,#640000)');
+	}
+	$('#buttons_footer h4').html(__testApp.build());
 });
 </script>
 <div data-role="page" id="page2">
@@ -87,8 +98,8 @@ $("#page2").on("pagecreate", function() {
 			</div>
 		</div>
 	</div>
-	<div data-role="footer" data-position="fixed">
-		<h4 id="buttons_footer">
+	<div id="buttons_footer" data-role="footer" data-position="fixed">
+		<h4>
 			Loading...
 		</h4>
 	</div>

@@ -23,15 +23,15 @@ document.addEventListener("wylei.ready", function () {
 }, false);
 
 __testApp.settings = {
-	office: true, //In office, or at home
+	office: true, //In office, or at home (This will be set automatically.)
 	prod: false, //Use the production scripts or local scripts
 	debug: true, //Add debug console script
 	minified: false, //Use the minified versions
-	build_date: '25/09/2013 16:27:37', //The build date [AR:D/M/Y H:i:s] <-- This is what my funciton looks for to auto replace the date
+	build_date: '27/09/2013 09:39:59', //The build date [AR:D/M/Y H:i:s] <-- This is what my funciton looks for to auto replace the date
 	build_version: '1.1', //The build version
 	timers: {
-		appMobi: 4500, //Milliseconds (from __testApp.init) to wait for appMobi js to fire its ready event
-		wylei: 4600, //Milliseconds (from __testApp.init) to wait for wylei js to fire its ready event
+		appMobi: 4500, //Milliseconds (from ajax callback) to wait for appMobi js to fire its ready event
+		wylei: 4600, //Milliseconds (from ajax callback) to wait for wylei js to fire its ready event
 		message_queue: 4700, //Milliseconds (from __testApp.init) to wait before flushing message queue
 	},
 	hosts: {
@@ -105,32 +105,33 @@ __testApp.init = function () {
 	__testApp.timers.message_queue = setTimeout(function () {
 		__testApp.flushMessageQueue();
 	}, __testApp.settings.timers.message_queue);
-	if (!this.scripts_ready.appMobi) {
-		this.timers.appMobi = setTimeout(function () {
-			if (typeof AppMobi === 'undefined') {
-				ddebug('__testApp: The appmobi script didnt load.');
-				alert('The appMobi script didnt load.');
-			} else {
-				ddebug('__testApp: The appmobi script didnt initialize in time.');
-			}
-			__testApp.flushMessageQueue();
-		}, this.settings.timers.appMobi);
-	}
-	if (!this.scripts_ready.wylei) {
-		this.timers.wylei = setTimeout(function () {
-			__testApp.flushMessageQueue();
-			if (typeof wylei === 'undefined') {
-				ddebug('__testApp: The wylei script didnt load.');
-				alert('The wylei script didnt load.');
-			} else if (!wylei.initialized) {
-				ddebug('__testApp: The wylei script didnt initialize in time.');
-			} else {
-				ddebug('__testApp: The wylei script didnt fire its ready event in time.');
-			}
-		}, this.settings.timers.wylei);
-	}
 	this.jsonp.get('http://tpetty.remote.staging.appmobi.com/testingapp/location.php', {}, function (location) {
-		self.office = (location === 'office') ? true : false;
+		if (!self.scripts_ready.appMobi) {
+			self.timers.appMobi = setTimeout(function () {
+				if (typeof AppMobi === 'undefined') {
+					ddebug('__testApp: The appmobi script didnt load.');
+					alert('The appMobi script didnt load.');
+				} else {
+					ddebug('__testApp: The appmobi script didnt initialize in time.');
+				}
+				__testApp.flushMessageQueue();
+			}, self.settings.timers.appMobi);
+		}
+		if (!self.scripts_ready.wylei) {
+			self.timers.wylei = setTimeout(function () {
+				__testApp.flushMessageQueue();
+				if (typeof wylei === 'undefined') {
+					ddebug('__testApp: The wylei script didnt load.');
+					alert('The wylei script didnt load.');
+				} else if (!wylei.initialized) {
+					ddebug('__testApp: The wylei script didnt initialize in time.');
+				} else {
+					ddebug('__testApp: The wylei script didnt fire its ready event in time.');
+				}
+			}, self.settings.timers.wylei);
+		}
+		self.settings.office = (location === 'office') ? true : false;
+		ddebug('__testApp: in office: ' + self.settings.office);
 		self.paths.localhost = (self.settings.office) ? self.settings.hosts.office : self.settings.hosts.home;
 		self.paths.scripthost = (self.settings.prod) ? self.settings.hosts.prod : self.paths.localhost;
 		self.paths.scriptpath = (self.settings.prod) ? self.settings.paths.prod : self.settings.paths.home;
