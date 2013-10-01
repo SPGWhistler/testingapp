@@ -57,7 +57,7 @@ document.addEventListener("appMobi.notification.push.receive", function () {
 */
 
 document.addEventListener("wylei.ready", function (d) {
-	wylei.user.login(true);
+	//wylei.user.login(true);
 }, false);
 
 function reload_me() {

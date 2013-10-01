@@ -1,13 +1,17 @@
 /*global alert, $, AppMobi, wylei */
 
 var __testApp = __testApp || {};
+var wylei = {
+	use_optimizer: false
+};
 
 function ddebug(msg) {
-	if (__testApp.scripts_ready.wylei) {
+	//@TODO Fix this with new wylei event structure
+	//if (__testApp.scripts_ready.wylei) {
 		console.log(msg);
-	} else {
-		__testApp.message_queue.push(msg);
-	}
+	//} else {
+		//__testApp.message_queue.push(msg);
+	//}
 }
 
 document.addEventListener("appMobi.device.ready", function () {
@@ -27,7 +31,7 @@ __testApp.settings = {
 	prod: false, //Use the production scripts or local scripts
 	debug: true, //Add debug console script
 	minified: false, //Use the minified versions
-	build_date: '27/09/2013 09:39:59', //The build date [AR:D/M/Y H:i:s] <-- This is what my funciton looks for to auto replace the date
+	build_date: '01/10/2013 11:04:33', //The build date [AR:D/M/Y H:i:s] <-- This is what my funciton looks for to auto replace the date
 	build_version: '1.1', //The build version
 	timers: {
 		appMobi: 4500, //Milliseconds (from ajax callback) to wait for appMobi js to fire its ready event
