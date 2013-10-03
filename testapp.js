@@ -1,8 +1,13 @@
 /*global alert, $, AppMobi, wylei */
 
 var __testApp = __testApp || {};
+
 var wylei = {
-	use_optimizer: false
+	debug_mode: true,
+	//debug_filter: 'optimizer',
+	facebook: {
+		appId: '585428521518342'
+	}
 };
 
 function ddebug(msg) {
@@ -31,7 +36,7 @@ __testApp.settings = {
 	prod: false, //Use the production scripts or local scripts
 	debug: true, //Add debug console script
 	minified: false, //Use the minified versions
-	build_date: '01/10/2013 11:04:33', //The build date [AR:D/M/Y H:i:s] <-- This is what my funciton looks for to auto replace the date
+	build_date: '03/10/2013 11:16:13', //The build date [AR:D/M/Y H:i:s] <-- This is what my funciton looks for to auto replace the date
 	build_version: '1.1', //The build version
 	timers: {
 		appMobi: 4500, //Milliseconds (from ajax callback) to wait for appMobi js to fire its ready event
