@@ -1,6 +1,6 @@
 <?php
 switch ($_SERVER['REMOTE_ADDR']) {
-case '66.202.133.210':
+case '108.176.92.204':
 	$location = 'office';
 	break;
 default:

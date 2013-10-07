@@ -16,12 +16,25 @@ $("#page2").on("pagecreate", function() {
 			|| d.getMonth() !== od.getMonth()
 			|| d.getDate() !== od.getDate()) {
 		$('#buttons_footer').css('background-image', 'linear-gradient(#3c3c3c,#640000)');
+	} else {
+		$('#buttons_footer').css('background-image', 'linear-gradient(#3c3c3c,#0B8800)');
+	}
+	ds = __testApp.settings.html_build_date;
+	od.setDate(ds.substr(0, 2));
+	od.setMonth((ds.substr(3, 2) - 1));
+	od.setFullYear(ds.substr(6, 4));
+	if (d.getFullYear() !== od.getFullYear()
+			|| d.getMonth() !== od.getMonth()
+			|| d.getDate() !== od.getDate()) {
+		$('#buttons_header').css('background-image', 'linear-gradient(#3c3c3c,#640000)');
+	} else {
+		$('#buttons_header').css('background-image', 'linear-gradient(#0B8800,#3c3c3c)');
 	}
 	$('#buttons_footer h4').html(__testApp.build());
 });
 </script>
 <div data-role="page" id="page2">
-	<div data-role="header" data-position="fixed">
+	<div id="buttons_header" data-role="header" data-position="fixed">
 		<h1 id="headertxt"></h1>
 	</div>
 	<div data-role="content">
@@ -63,6 +76,18 @@ $("#page2").on("pagecreate", function() {
 			</div>
 			<div data-role="collapsible" data-collapsed="true">
 				<h3>Optimize</h3>
+				<fieldset data-role="controlgroup" id="optimizer_events">
+					<input type="radio" name="event" id="rctwitter" value="twitter" checked="checked">
+					<label for="rctwitter">Twitter</label>
+					<input type="radio" name="event" id="rcfbpost" value="fbpost">
+					<label for="rcfbpost">Facebook Post</label>
+					<input type="radio" name="event" id="rcfblike" value="fblike">
+					<label for="rcfblike">Facebook Like</label>
+					<input type="radio" name="event" id="rcrate" value="rate">
+					<label for="rcrate">Rate App</label>
+					<input type="radio" name="event" id="rcad" value="ad">
+					<label for="rcad">Ad</label>
+				</fieldset>
 				<button onclick="doOptimize();">Do Optimize</button>
 				<button onclick="doOptimize(); doOptimize();">Do Optimize Twice</button>
 				<button onclick="doFakePush();">Fake Push</button>

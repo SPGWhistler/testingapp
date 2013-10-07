@@ -11,7 +11,7 @@ var onDeviceReady = function () {
 	AppMobi.device.hideSplashScreen();
 	AppMobi.device.managePower(true, false); //When app is open, dont go to sleep
 	AppMobi.notification.checkPushUser('tpetty', 'tpetty');
-	__testApp.settings.build = __testApp.settings.build + ' AMCv' + AppMobi.device.appmobiversion;
+	__testApp.settings.build += ' AMCv' + AppMobi.device.appmobiversion;
 };
 document.addEventListener("appMobi.device.ready", onDeviceReady, false);
 
@@ -82,7 +82,7 @@ function reload_page() {
 
 function doOptimize() {
 	ddebug('doing optimize');
-	wylei.optimizer.optimizeEvent('level-5');
+	wylei.optimizer.optimizeEvent($('#optimizer_events input:checked').val());
 }
 
 function doFakePush() {

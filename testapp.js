@@ -31,58 +31,58 @@ document.addEventListener("wylei.ready", function () {
 	clearTimeout(__testApp.timers.wylei);
 }, false);
 
-__testApp.settings = {
-	office: true, //In office, or at home (This will be set automatically.)
-	prod: false, //Use the production scripts or local scripts
-	debug: true, //Add debug console script
-	minified: false, //Use the minified versions
-	build_date: '03/10/2013 11:16:13', //The build date [AR:D/M/Y H:i:s] <-- This is what my funciton looks for to auto replace the date
-	build_version: '1.1', //The build version
-	timers: {
-		appMobi: 4500, //Milliseconds (from ajax callback) to wait for appMobi js to fire its ready event
-		wylei: 4600, //Milliseconds (from ajax callback) to wait for wylei js to fire its ready event
-		message_queue: 4700, //Milliseconds (from __testApp.init) to wait before flushing message queue
+__testApp.settings = __testApp.settings || {};
+
+__testApp.settings.office = true; //In office, or at home (This will be set automatically.)
+__testApp.settings.prod = false; //Use the production scripts or local scripts
+__testApp.settings.debug = true; //Add debug console script
+__testApp.settings.minified = false; //Use the minified versions
+__testApp.settings.build_date = '07/10/2013 09:12:31'; //The build date [AR:D/M/Y H:i:s] <-- This is what my funciton looks for to auto replace the date
+__testApp.settings.build_version = '1.1'; //The build version
+__testApp.settings.timers = {
+	appMobi: 4500, //Milliseconds (from ajax callback) to wait for appMobi js to fire its ready event
+	wylei: 4600, //Milliseconds (from ajax callback) to wait for wylei js to fire its ready event
+	message_queue: 4700, //Milliseconds (from __testApp.init) to wait before flushing message queue
+};
+__testApp.settings.hosts = {
+	prod: 'https://s3.amazonaws.com', //Prod host name
+	home: 'http://192.168.11.12', //Home host name
+	office: 'http://192.168.1.15' //Office host name
+};
+__testApp.settings.paths = {
+	prod: '/wylei/', //Prod path
+	home: '/~tpetty/amoauth/' //Home path
+};
+__testApp.settings.scripts = {
+	static: [
+		//Add static scripts here
+	],
+	dynamic: function () {
+		var scripts = [
+			//Add dynamic scripts here
+			{
+				src: 'http://code.jquery.com/jquery-1.9.1' + ((__testApp.settings.minified) ? '.min' : '') + '.js',
+				random: false
+			},
+			{
+				src: 'http://code.jquery.com/mobile/1.3.1/jquery.mobile-1.3.1' + ((__testApp.settings.minified) ? '.min' : '') + '.js',
+				random: false
+			},
+			__testApp.paths.localhost + '/~tpetty/testapp/1touchlive/onetouch.js',
+			__testApp.paths.scripthost + __testApp.paths.scriptpath + 'wylei' + ((__testApp.settings.minified) ? '.min' : '') + '.js',
+			__testApp.paths.localhost + '/~tpetty/testapp/jsfunc.js'
+		];
+		return scripts;
 	},
-	hosts: {
-		prod: 'https://s3.amazonaws.com', //Prod host name
-		home: 'http://192.168.11.12', //Home host name
-		office: 'http://192.168.1.15' //Office host name
-	},
-	paths: {
-		prod: '/wylei/', //Prod path
-		home: '/~tpetty/amoauth/' //Home path
-	},
-	scripts: {
-		static: [
-			//Add static scripts here
-		],
-		dynamic: function () {
-			var scripts = [
-				//Add dynamic scripts here
-				{
-					src: 'http://code.jquery.com/jquery-1.9.1' + ((__testApp.settings.minified) ? '.min' : '') + '.js',
-					random: false
-				},
-				{
-					src: 'http://code.jquery.com/mobile/1.3.1/jquery.mobile-1.3.1' + ((__testApp.settings.minified) ? '.min' : '') + '.js',
-					random: false
-				},
-				__testApp.paths.localhost + '/~tpetty/testapp/1touchlive/onetouch.js',
-				__testApp.paths.scripthost + __testApp.paths.scriptpath + 'wylei' + ((__testApp.settings.minified) ? '.min' : '') + '.js',
-				__testApp.paths.localhost + '/~tpetty/testapp/jsfunc.js'
-			];
-			return scripts;
-		},
-		debug: function () {
-			var scripts = [
-				//Add debug only scripts here
-				{
-					src: __testApp.paths.localhost + ':8080' + '/target/target-script-min.js',
-					random: false
-				}
-			];
-			return scripts;
-		}
+	debug: function () {
+		var scripts = [
+			//Add debug only scripts here
+			{
+				src: __testApp.paths.localhost + ':8080' + '/target/target-script-min.js',
+				random: false
+			}
+		];
+		return scripts;
 	}
 };
 
