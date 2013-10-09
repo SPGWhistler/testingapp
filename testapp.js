@@ -47,7 +47,7 @@ __testApp.settings.timers = {
 __testApp.settings.hosts = {
 	prod: 'https://s3.amazonaws.com', //Prod host name
 	home: 'http://192.168.11.12', //Home host name
-	office: 'http://192.168.1.15' //Office host name
+	office: 'http://192.168.0.6' //Office host name
 };
 __testApp.settings.paths = {
 	prod: '/wylei/', //Prod path
