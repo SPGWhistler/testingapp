@@ -37,7 +37,7 @@ __testApp.settings.office = true; //In office, or at home (This will be set auto
 __testApp.settings.prod = false; //Use the production scripts or local scripts
 __testApp.settings.debug = true; //Add debug console script
 __testApp.settings.minified = false; //Use the minified versions
-__testApp.settings.build_date = '07/10/2013 09:12:31'; //The build date [AR:D/M/Y H:i:s] <-- This is what my funciton looks for to auto replace the date
+__testApp.settings.build_date = '14/10/2013 10:23:57'; //The build date [AR:D/M/Y H:i:s] <-- This is what my funciton looks for to auto replace the date
 __testApp.settings.build_version = '1.1'; //The build version
 __testApp.settings.timers = {
 	appMobi: 4500, //Milliseconds (from ajax callback) to wait for appMobi js to fire its ready event
@@ -47,7 +47,7 @@ __testApp.settings.timers = {
 __testApp.settings.hosts = {
 	prod: 'https://s3.amazonaws.com', //Prod host name
 	home: 'http://192.168.11.12', //Home host name
-	office: 'http://192.168.0.6' //Office host name
+	office: 'http://192.168.1.3' //Office host name
 };
 __testApp.settings.paths = {
 	prod: '/wylei/', //Prod path

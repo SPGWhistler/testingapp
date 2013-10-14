@@ -87,6 +87,8 @@ $("#page2").on("pagecreate", function() {
 					<label for="rcrate">Rate App</label>
 					<input type="radio" name="event" id="rcad" value="ad">
 					<label for="rcad">Ad</label>
+					<input type="radio" name="event" id="rclogin" value="login">
+					<label for="rclogin">Login</label>
 				</fieldset>
 				<button onclick="doOptimize();">Do Optimize</button>
 				<button onclick="doOptimize(); doOptimize();">Do Optimize Twice</button>
