@@ -2,14 +2,6 @@
 
 var __testApp = __testApp || {};
 
-var wylei = {
-	debug_mode: true,
-	//debug_filter: 'optimizer',
-	facebook: {
-		appId: '585428521518342'
-	}
-};
-
 function ddebug(msg) {
 	//@TODO Fix this with new wylei event structure
 	//if (__testApp.scripts_ready.wylei) {
@@ -37,7 +29,7 @@ __testApp.settings.office = true; //In office, or at home (This will be set auto
 __testApp.settings.prod = false; //Use the production scripts or local scripts
 __testApp.settings.debug = true; //Add debug console script
 __testApp.settings.minified = false; //Use the minified versions
-__testApp.settings.build_date = '15/10/2013 10:09:09'; //The build date [AR:D/M/Y H:i:s] <-- This is what my funciton looks for to auto replace the date
+__testApp.settings.build_date = '17/10/2013 11:37:17'; //The build date [AR:D/M/Y H:i:s] <-- This is what my funciton looks for to auto replace the date
 __testApp.settings.build_version = '1.1'; //The build version
 __testApp.settings.timers = {
 	appMobi: 4500, //Milliseconds (from ajax callback) to wait for appMobi js to fire its ready event
@@ -108,8 +100,12 @@ __testApp.timers = {
 	wylei: null
 };
 
-__testApp.init = function () {
+__testApp.init = function (is_app) {
 	var self = this;
+	is_app = (is_app === false) ? false : true;
+	if (!is_app) {
+		this.scripts_ready.appMobi = true;
+	}
 	ddebug('__testApp: initializing');
 	__testApp.timers.message_queue = setTimeout(function () {
 		__testApp.flushMessageQueue();
@@ -213,7 +209,7 @@ __testApp.flushMessageQueue = function () {
 __testApp.build = function () {
 	var str;
 	str = 'v:' + this.settings.build_version + ' d:' + this.settings.build_date;
-	if (AppMobi && AppMobi.device) {
+	if (typeof AppMobi !== 'undefined' && AppMobi.device) {
 		str += ' amv:' + AppMobi.device.appmobiversion + ' jsv:' + AppMobi.jsVersion;
 	}
 	return str;
