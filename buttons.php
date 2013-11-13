@@ -47,6 +47,8 @@ $("#page2").on("pagecreate", function() {
 					<ol data-role="listview" data-filter="true" id="fbfriendslist">
 					</ol>
 				</div>
+				<button onclick="facebook_login();">login</button>
+				<button onclick="facebook_logout();">logout</button>
 			</div>
 			<div data-role="collapsible" data-collapsed="true">
 				<h3>Leaderboards</h3>

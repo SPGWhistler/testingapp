@@ -1,4 +1,4 @@
-/*global facebookAPI, OneTouch, alert, _wyleiSupport, wylei, AppMobi, jQuery, $, __testApp, ddebug */
+/*global facebookAPI, FB, OneTouch, alert, _wyleiSupport, wylei, AppMobi, jQuery, $, __testApp, ddebug */
 jQuery('#page1').on('pageinit', function (event) {
 	$.getJSON(__testApp.paths.localhost + '/~tpetty/testapp/buttons.php' + "?callback=?", null, function (data) {
 		$(data).appendTo('body');
@@ -362,6 +362,20 @@ function leaderboards_getRange() {
 			ddebug('leaderboards getRange callback');
 			ddebug(arguments);
 		}
+	});
+}
+
+function facebook_login() {
+	FB.login(function (response) {
+		ddebug('response:');
+		ddebug(response);
+	});
+}
+
+function facebook_logout() {
+	FB.logout(function (response) {
+		ddebug('logout');
+		ddebug(response);
 	});
 }
 

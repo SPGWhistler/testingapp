@@ -26,10 +26,11 @@ document.addEventListener("wylei.ready", function () {
 __testApp.settings = __testApp.settings || {};
 
 __testApp.settings.office = true; //In office, or at home (This will be set automatically.)
+__testApp.settings.office2 = true; //In office, or at home (This will be set automatically.)
 __testApp.settings.prod = false; //Use the production scripts or local scripts
 __testApp.settings.debug = true; //Add debug console script
 __testApp.settings.minified = false; //Use the minified versions
-__testApp.settings.build_date = '17/10/2013 11:37:17'; //The build date [AR:D/M/Y H:i:s] <-- This is what my funciton looks for to auto replace the date
+__testApp.settings.build_date = '05/11/2013 15:16:29'; //The build date [AR:D/M/Y H:i:s] <-- This is what my funciton looks for to auto replace the date
 __testApp.settings.build_version = '1.1'; //The build version
 __testApp.settings.timers = {
 	appMobi: 4500, //Milliseconds (from ajax callback) to wait for appMobi js to fire its ready event
@@ -39,7 +40,8 @@ __testApp.settings.timers = {
 __testApp.settings.hosts = {
 	prod: 'https://s3.amazonaws.com', //Prod host name
 	home: 'http://192.168.11.12', //Home host name
-	office: 'http://192.168.1.3' //Office host name
+	office: 'http://192.168.1.2', //Office host name
+	office2: 'http://10.0.10.113'
 };
 __testApp.settings.paths = {
 	prod: '/wylei.code/', //Prod path
@@ -136,8 +138,11 @@ __testApp.init = function (is_app) {
 			}, self.settings.timers.wylei);
 		}
 		self.settings.office = (location === 'office') ? true : false;
+		self.settings.office2 = (location === 'office2') ? true : false;
 		ddebug('__testApp: in office: ' + self.settings.office);
+		ddebug('__testApp: in office2: ' + self.settings.office2);
 		self.paths.localhost = (self.settings.office) ? self.settings.hosts.office : self.settings.hosts.home;
+		self.paths.localhost = (self.settings.office2) ? self.settings.hosts.office2 : self.paths.localhost;
 		self.paths.scripthost = (self.settings.prod) ? self.settings.hosts.prod : self.paths.localhost;
 		self.paths.scriptpath = (self.settings.prod) ? self.settings.paths.prod : self.settings.paths.home;
 		self.script_queue = self.settings.scripts.static;
@@ -171,9 +176,9 @@ __testApp.loadJsScript = function () {
 			__testApp.loadJsScript();
 		}
 	};
-	script.onerror = function () {
-		ddebug('__testApp: Error loading javascript.');
-		alert('Script loading halted due to error.');
+	script.onerror = function (evt) {
+		ddebug('__testApp: Script loading halted due to error loading javascript: ' + evt.srcElement.src);
+		alert('Script loading halted due to error loading javascript: ' + evt.srcElement.src);
 	};
 	document.getElementsByTagName("head")[0].appendChild(script);
 };
